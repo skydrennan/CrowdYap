@@ -1,0 +1,11 @@
+.product-panel {
+  color: #333;
+  background-color: #F5F5F5;
+  border-color: #E9E9E9;
+}
+
+.panel > .panel-heading {
+  background-color: #E9E9E9;
+  border-color: #E9E9E9;
+  color: #333;
+}
