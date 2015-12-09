@@ -4,7 +4,7 @@ var ReactRouter = require("react-router");
 var Link = ReactRouter.Link;
 var History = ReactRouter.History;
 
-//require("../../node_modules/bootstrap/dist/css/bootstrap.min.css");
+require("../../node_modules/bootstrap/dist/css/bootstrap.min.css");
 require("../../node_modules/bootstrap/dist/js/bootstrap.min.js");
 
 var App = React.createClass({
@@ -26,7 +26,7 @@ var App = React.createClass({
               </div>
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav">
-                  <li><Link to="product">Create Product</Link></li>
+                  <li><Link to="create_product">Create Product</Link></li>
                   <li><Link to="product">Example Listing</Link></li>
                 </ul>
               </div>

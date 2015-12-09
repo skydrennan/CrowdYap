@@ -8,6 +8,7 @@ var IndexRoute = ReactRouter.IndexRoute;
 
 var App = require("./app.js");
 var Product = require("./product.js");
+var CreateProduct = require("./create_product.js");
 var Checkout = require("./checkout.js");
 var Home = require("./home.js");
 
@@ -22,6 +23,7 @@ var routes = (
     <Route name="app" path="/" component ={App}>
       <IndexRoute component = {Home} />
       <Route name="product" path="/product" component={Product} />
+      <Route name="create_product" path="/create_product" component={CreateProduct} />
       <Route name="checkout" path="/checkout" component={Checkout} />
     </Route>
   </Router>

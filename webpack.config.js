@@ -42,7 +42,8 @@ module.exports = {
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file?name=assets/[name].[ext]" },
       { test: /\.(woff|woff2)$/, loader:"url?name=assets/[name].[ext]&prefix=font/&limit=5000" },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?name=assets/[name].[ext]&limit=10000&mimetype=application/octet-stream" },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?name=assets/[name].[ext]&limit=10000&mimetype=image/svg+xml" }
+      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?name=assets/[name].[ext]&limit=10000&mimetype=image/svg+xml" },
+      { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'url?limit=10000!img?progressive=true' }
     ],
   },
 }

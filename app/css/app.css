@@ -1,3 +1,13 @@
+.center {
+  text-align: center;
+}
+
+.dropzone-panel {
+  background-color: #F9F9F9;
+  border-width: 1px;
+  border-color: #666;
+  border-style: dashed;
+}
 
 .product-panel {
   color: #333;
