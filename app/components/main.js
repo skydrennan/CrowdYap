@@ -9,6 +9,7 @@ var IndexRoute = ReactRouter.IndexRoute;
 var App = require("./app.js");
 var Product = require("./product.js");
 var Checkout = require("./checkout.js");
+var User = require("./user.js");
 var Home = require("./home.js");
 
 //window.jQuery = window.$ = require("../../node_modules/jquery/dist/jquery");
@@ -23,6 +24,7 @@ var routes = (
       <IndexRoute component = {Home} />
       <Route name="product" path="/product" component={Product} />
       <Route name="checkout" path="/checkout" component={Checkout} />
+      <Route name="user" path="/user" component={User} />
     </Route>
   </Router>
 );
