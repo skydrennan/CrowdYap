@@ -28,6 +28,7 @@ var App = React.createClass({
                 <ul className="nav navbar-nav">
                   <li><Link to="create_product">Create Product</Link></li>
                   <li><Link to="product">Example Listing</Link></li>
+		  <li><Link to="user">Manage Profile</Link></li>
                 </ul>
               </div>
             </div>
