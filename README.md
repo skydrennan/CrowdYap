@@ -1,4 +1,4 @@
-# list-o-matic Node.js server using mongodb and React
+# CrowdYap - Node.js server using mongodb and React
 
 A simple first iteration of a social buying website. Uses Node.js and Express, with username/password for login, token-based authentication, and mongoose as an ORM for mongodb. The Front end uses React.
 

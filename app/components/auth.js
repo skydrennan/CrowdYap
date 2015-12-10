@@ -2,7 +2,7 @@ var $ = require("jquery");
 
 // authentication object
 var auth = {
-  register: function(firstname, lastname, username, password, email, phone, cb) {
+  register: function(name, username, password, cb) {
     // submit request to server, call the callback when complete
     var url = "/api/users/register";
     $.ajax({
@@ -10,17 +10,14 @@ var auth = {
       dataType: 'json',
       type: 'POST',
       data: {
-        firstname: firstname,
-        lastname: lastname,
+        name: name,
         username: username,
-        password: password,
-        email: email,
-        phone: phone
+        password: password
       },
       // on success, store a login token
       success: function(res) {
         localStorage.token = res.token;
-        localStorage.firstname = res.firstname;
+        localStorage.name = res.name;
         this.onChange(true);
         if (cb)
           cb(true);

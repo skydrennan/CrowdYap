@@ -22,17 +22,14 @@ var Register = React.createClass({
     // prevent default browser submit
     event.preventDefault();
     // get data from form
-    var firstname = this.refs.firstname.value;
-    var lastname = this.refs.lastname.value;
+    var name = this.refs.name.value;
     var username = this.refs.username.value;
     var password = this.refs.password.value;
-    var email = this.refs.email.value;
-    var phone = this.refs.phone.value;
-    if (!firstname || !username || !password || !lastname || !email || !phone) {
+    if (!name || !username || !password) {
       return;
     }
     // register via the API
-    auth.register(firstname, lastname, username, password, email, phone, function(loggedIn) {
+    auth.register(name, username, password, function(loggedIn) {
       // register callback
       if (!loggedIn)
         return this.setState({
@@ -48,21 +45,16 @@ var Register = React.createClass({
       <div>
         <h2>Register</h2>
         <form className="form-vertical" onSubmit={this.register}>
-          <p>
-          <input type="text" placeholder="First Name" ref="firstname" autoFocus={true} />
-          <input type="text" placeholder="Last Name" ref="lastname" />
+        <p>
+          <input type="text" placeholder="Name" ref="name" autoFocus={true} />
           </p>
           <p>
           <input type="text" placeholder="Username" ref="username"/>
+          </p>
+          <p>
           <input type="password" placeholder="Password" ref="password"/>
           </p>
-          <p>
-          <input type="email" placeholder="Email" ref="email"/>
-          <input type="tel" placeholder="Telephone Number" ref="phone"/>
-          </p>
-          <p>
           <input className="btn" type="submit" value="Register" />
-          </p>
           {this.state.error ? (
              <div className="alert">Invalid username or password.</div>
            ) : null }
