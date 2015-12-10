@@ -8,9 +8,9 @@ var Home = React.createClass({
   render: function() {
     return (
       <div>
-        <h1>Home</h1>
-        <p>Put your home page here</p>
-
+        <h1>Welcome to CrowdYap</h1>
+        <p>We are your one-stop site for social buying.</p>
+        <p>Let's get started! Choose login or register from above to continue.</p>
       </div>
     );
   }
