@@ -41,8 +41,6 @@ getThumbnailContent = (item) => {
   );
 }
 
-
-
 var ProductGallery = React.createClass({
   render: function() {
     return (
@@ -52,7 +50,61 @@ var ProductGallery = React.createClass({
   }
 });
 
+var ProductForm = React.createClass({
+  componentWillMount: function() {
+    for (var key in this.props.data){
+      this.setState({[key]: this.props.data[key]});
+    }
+    /*this.setState({
+      likesIncreasing: nextProps.likeCount > this.props.likeCount
+    });*/
+  },
+
+  getInitialState: function() {
+    return {};
+  },
+  handleFormSubmit: function(form) {
+
+  }, 
+  handleChildStateChange: function(change){
+    for (var key in change){
+      this.setState({[key]: change[key]});
+    }
+  },
+
+  render: function() {
+    return (
+      <div>
+          <ProductPanel onStateChange={this.handleChildStateChange} data={data} />
+          <ImagePanel data={data} />
+          <PricePanel data={data} />
+          <AnotherPanel data={data} />
+          <PostListingPanel onFormSubmit={this.handleFormSubmit} data={this.props.data} />
+      </div>
+      )
+  }
+});
+
 var ProductPanel = React.createClass({
+
+  getInitialState: function() {
+    return {title: this.props.data.title,
+            category: this.props.data.category,
+            description: this.props.data.description};
+  },
+  handleTitleChange: function(e) {
+    this.setState({title: e.target.value});
+    this.props.onStateChange({title: e.target.value})
+  },
+  handleCategoryChange: function(e) {
+    this.setState({category: e.target.value});
+    this.props.onStateChange({category: e.target.value})
+  },
+  handleDescriptionChange: function(e) {
+    this.setState({description: e.target.value});
+    this.props.onStateChange({description: e.target.value})
+  },
+
   render: function() {
     return (
       <div className="panel panel-default product-panel">
@@ -61,10 +113,10 @@ var ProductPanel = React.createClass({
         </div>
         <div className="panel-body">
         <div className="form-group">
-            <input type="text" className="form-control" id="title" placeholder="Title" />
+            <input type="text" className="form-control" value={this.state.title} onChange={this.handleTitleChange} placeholder="Title" />
             <br />
             <label htmlFor="category">Category</label>
-            <select className="form-control" id="category">
+            <select className="form-control" id="category" value={this.state.category} onChange={this.handleCategoryChange}>
               <option>Apparel & Accessories</option>
               <option>Electronics</option>
               <option>Beauty & Health</option>
@@ -73,7 +125,7 @@ var ProductPanel = React.createClass({
               <option>Local</option>
             </select>
             <br />
-            <textarea className="form-control" rows="3" placeholder="Description" id="description"></textarea>
+            <textarea className="form-control" rows="3" placeholder="Description" value={this.state.description} onChange={this.handleDescriptionChange}></textarea>
           </div>
         </div>
       </div>
@@ -82,14 +134,28 @@ var ProductPanel = React.createClass({
 });
 
 var PostListingPanel = React.createClass({
+
+
+  getInitialState: function() {
+    return {checkbox: this.props.data.checkbox};
+  },
+  handleChange: function(e) {
+    this.setState({checkbox: e.target.checked});
+  },
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var checkbox = this.state.checkbox;
+    this.props.onFormSubmit({checkbox: checkbox});
+  }, 
+
   render: function() {
     return (
       <div className="col-sm-12 panel panel-default product-panel">
         <div className="panel-body center">
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <div className="checkbox">
             <label>
-              <input type="checkbox"> Agree to terms and conditions </input>
+              <input checked={this.state.checkbox} value={this.state.valuecheckbox} type="checkbox" onChange={this.handleChange}> Agree to terms and conditions </input>
             </label>
           </div>
           <button type="submit" className="btn btn-primary">Post Product Yap</button>
@@ -180,18 +246,14 @@ var AnotherPanel = React.createClass({
 });
 
 var data =
-  {id: 1, title: "This is a temp Item Title", description:"Here is the description.", 
-  sellerInfo: "Here is some seller info.", priceInfo: "Here is some price info."};
+  {id: 1, title: "", description:"", 
+  category: "Apparel & Accessories", priceInfo: "Here is some price info.", checkbox: false};
 
 var CreateProduct = React.createClass({
   render: function() {
     return (
       <div>
-        <ProductPanel data={data} />
-        <ImagePanel data={data} />
-        <PricePanel data={data} />
-        <AnotherPanel data={data} />
-        <PostListingPanel data={data} />
+        <ProductForm data={data} />
       </div>
     );
   }
