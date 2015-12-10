@@ -11,6 +11,8 @@
     "history": "^1.13.1",
     "jquery": "^2.1.4",
     "jsonwebtoken": "^5.0.5",
+    "kerberos": "0.0.17",
+    "mongodb": "^2.1.0",
     "mongoose": "^4.0.8",
     "mongoose-findorcreate": "^0.1.2",
     "react": "^0.14.3",

@@ -2,12 +2,12 @@
 var app = require('./models/express.js');
 
 // setup mongoose
-//var mongoose = require('mongoose');
-//var db = mongoose.connect('mongodb://localhost/list');
+var mongoose = require('mongoose');
+var db = mongoose.connect('mongodb://localhost/crowdyap');
 
 // models
-//var api = require('./models/api.js');
-//var User = require('./models/user.js');
+var api = require('./models/api.js');
+var User = require('./models/user.js');
 //var Item = require('./models/item.js');
 
 // start the server
