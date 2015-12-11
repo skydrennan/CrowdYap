@@ -50,10 +50,8 @@ var news_feed = React.createClass({
   render: function() {
     return (
 	<section id="main">
-	  //<ListEntry reload={this.reload}/>
 	  <NewsItems products={this.state.products} reload={this.reload}/>
 	</section>
-      //</section>
     );
   }
 });

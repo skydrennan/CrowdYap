@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
 app.post('/api/product', function (req,res) {
   user = User.verifyToken(req.headers.authorization, function(user) {
     if (user) {
-      Product.create({    	
+      Product.create({
   		  title: req.body.product.title,
   		  duration: req.body.product.duration,
   		  category: req.body.product.category,
@@ -67,7 +67,6 @@ app.get('/api/products', function(req,res) {
     });
       // return value is the list of products as JSON
       res.json({products: products});
-    }
 });
 
 
