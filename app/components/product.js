@@ -121,10 +121,10 @@ var BuyPanel = React.createClass({
 });
 
 var data =
-  {id: 1, title: "This is a temp Item Title", description:"Here is the description.", 
+  {id: 1, title: "This is a temp Item Title", description:"Here is the description.",
   sellerInfo: "Here is some seller info.", priceInfo: "Here is some price info."};
 
-var Product = React.createClass({  
+var Product = React.createClass({
   mixins: [ History ],
   getInitialState: function() {
     return {
@@ -135,14 +135,14 @@ var Product = React.createClass({
   componentDidMount: function(){
     var id = this.props.params.id
     api.getProduct(id, this.loadProduct);
-  }, 
+  },
   loadProduct: function(status, data){
     if (status) {
       this.setState({
         product: data.product
       });
     } else {
-      this.history.pushState(null, '/');
+      this.history.pushState(null, '/create_product');
     }
   },
   render: function() {

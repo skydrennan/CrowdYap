@@ -23,6 +23,7 @@ var App = React.createClass({
   // callback when user is logged in
   setStateOnAuth: function(loggedIn) {
     this.setState({loggedIn:loggedIn});
+    this.history.pushState(null, "/news_feed");
   },
 
   // when the component loads, setup the callback
@@ -48,7 +49,11 @@ var App = React.createClass({
                    <span className="icon-bar"></span>
                    <span className="icon-bar"></span>
                 </button>
+                {this.state.loggedIn ? (
+                <Link to="/news_feed" className="navbar-brand">CrowdYap</Link>
+              ) : (
                 <a className="navbar-brand" href="/">CrowdYap</a>
+              )}
               </div>
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               {this.state.loggedIn ? (

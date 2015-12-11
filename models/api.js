@@ -57,6 +57,19 @@ app.get('/api/product/:id', function (req,res) {
   });
 });
 
+app.get('/api/products', function(req,res) {
+
+    Product.find({}, function(err, products) {
+      if(err) {
+        res.sendStatus(403);
+        return;
+      }
+    });
+      // return value is the list of products as JSON
+      res.json({products: products});
+    }
+});
+
 
 //
 // API
