@@ -51,13 +51,13 @@ var App = React.createClass({
                 <a className="navbar-brand" href="/">CrowdYap</a>
               </div>
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              {this.state.loggedIn ? (
                 <ul className="nav navbar-nav">
                   <li><Link to="create_product">Create Product</Link></li>
                   <li><Link to="product/123">Example Listing</Link></li>
-		              <li><Link to="login">Login</Link></li>
-                  <li><Link to="register">Register</Link></li>
                   <li><a href="#" onClick={this.logout}>Logout</a></li>
                 </ul>
+              ) : (<div></div>)}
               </div>
             </div>
         </nav>
