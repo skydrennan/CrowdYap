@@ -122,6 +122,7 @@ var BuyPanel = React.createClass({
   }
 });
 
+
 var data =
   {id: 1, title: "This is a temp Item Title", description:"Here is the description.",
   sellerInfo: "Here is some seller info.", priceInfo: "Here is some price info."};
