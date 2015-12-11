@@ -96,7 +96,7 @@ var PricePanel = React.createClass({
       <div className="col-sm-6 panel panel-default product-panel price-panel">
         <div className="panel-body center">
           <h2>${this.props.product.currentPrice}.00 <small>Current Price</small></h2>
-          <button onClick={this.buyNowClick} type="button" className="btn btn-primary">Buy Now</button>
+          <button onClick={this.buyNowClick} type="button" className="btn btn-primary">Buy Now</button><h4> {this.props.product.quantity} <small>Remaining </small></h4>
           <h3>{this.props.product.followerCount} <small>People Following</small></h3>
           <button onClick={this.followClick} type="button" className="btn btn-primary">Follow</button>
         </div>
@@ -111,7 +111,7 @@ var BuyPanel = React.createClass({
       <div className="col-sm-5 col-sm-offset-1 panel panel-default product-panel buy-panel">
         <div className="panel-body center">
 
-          <h3>Seller: <small>dummy_seller1</small></h3>
+          <h3>Seller: <small>{this.props.product.seller}</small></h3>
           <h4>{this.props.product.lowPriceFollowers} <small>and the price will drop to</small> ${this.props.product.lowPrice}.00</h4>
           {this.props.product.sellerInfo}
         </div>

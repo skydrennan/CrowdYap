@@ -8,14 +8,14 @@ var api = {
     $.ajax({
       url: url,
       dataType: 'json',
+      headers: {'Authorization': localStorage.token},
       type: 'GET',
       success: function(res) {
         if (cb)
           cb(true, res);
       },
       error: function(xhr, status, err) {
-        // if there is an error, remove the login token
-        //delete localStorage.token;
+        delete localStorage.token;
         if (cb)
           cb(false, status);
       }
@@ -30,14 +30,14 @@ var api = {
       data: JSON.stringify({
         product : data
       }),
+      headers: {'Authorization': localStorage.token},
       type: 'POST',
       success: function(res) {
         if (cb)
           cb(true, res);
       },
       error: function(xhr, status, err) {
-        // if there is an error, remove the login token
-        //delete localStorage.token;
+        delete localStorage.token;
         if (cb)
           cb(false, status);
       }

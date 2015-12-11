@@ -12,9 +12,8 @@ app.use(bodyParser.urlencoded({
 
 // add an product
 app.post('/api/product', function (req,res) {
-  //user = User.verifyToken(req.headers.authorization, function(user) {
-    //if (user) {
-      // if the token is valid, create the item for the user
+  user = User.verifyToken(req.headers.authorization, function(user) {
+    if (user) {
       Product.create({    	
   		  title: req.body.product.title,
   		  duration: req.body.product.duration,
@@ -23,6 +22,7 @@ app.post('/api/product', function (req,res) {
   		  highPrice: req.body.product.highPrice,
   		  lowPrice: req.body.product.lowPrice,
   		  lowPriceFollowers: req.body.product.lowPriceFollowers,
+        seller: user.id,
   		  quantity: req.body.product.quantity}, function(err,product) {
         	if (err) {
         	  res.sendStatus(403);
@@ -30,18 +30,16 @@ app.post('/api/product', function (req,res) {
         	}
           res.json(product.id);
       });
-    //} else {
-      //res.sendStatus(403);
-    //}
-  //});
+    } else {
+      res.sendStatus(403);
+    }
+  });
 });
 
 app.get('/api/product/:id', function (req,res) {
   // validate the supplied token
-  //user = User.verifyToken(req.headers.authorization, function(user) {
-    //if (user) {
-      // if the token is valid, then find the requested item
-
+  user = User.verifyToken(req.headers.authorization, function(user) {
+    if (user) {
       Product.findById(req.params.id, function(err, product) {
         if (err) {
           res.sendStatus(403);
@@ -50,14 +48,13 @@ app.get('/api/product/:id', function (req,res) {
         productObj = product.toObject();
         productObj.currentPrice = productObj.highPrice;
         productObj.followerCount = "0";
-        // get the item if it belongs to the user, otherwise return an error
-        // return value is the item as JSON
+        productObj.seller = user.username;
         res.json({product:productObj});
       });
-    //} else {
-    //  res.sendStatus(403);
-    //}
-  //});
+    } else {
+      res.sendStatus(403);
+    }
+  });
 });
 
 
