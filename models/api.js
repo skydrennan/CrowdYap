@@ -15,7 +15,7 @@ app.post('/api/product', function (req,res) {
   //user = User.verifyToken(req.headers.authorization, function(user) {
     //if (user) {
       // if the token is valid, create the item for the user
-      Product.create({    	
+      Product.create({
   		  title: req.body.product.title,
   		  duration: req.body.product.duration,
   		  category: req.body.product.category,
@@ -58,6 +58,19 @@ app.get('/api/product/:id', function (req,res) {
     //  res.sendStatus(403);
     //}
   //});
+});
+
+app.get('/api/products', function(req,res) {
+
+    Product.find({}, function(err, products) {
+      if(err) {
+        res.sendStatus(403);
+        return;
+      }
+    });
+      // return value is the list of products as JSON
+      res.json({products: products});
+    }
 });
 
 

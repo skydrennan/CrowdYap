@@ -2,6 +2,26 @@ var $ = require("jquery");
 
 // API object
 var api = {
+  //gets items for the news_feed
+  getProducts: function(cb) {
+    var url = "/api/products";
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      type: 'GET',
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        // if there is an error, remove the login token
+        //delete localStorage.token;
+        if (cb)
+          cb(false, status);
+      }
+    });
+  },
+
   // add an item, call the callback when complete
   getProduct: function(id, cb) {
     var url = "/api/product/"+id;
