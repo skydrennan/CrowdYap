@@ -284,14 +284,14 @@ var AnotherPanel = React.createClass({
 
 var data =
 {
-  title: "Test Title",
+  title: "",
   duration: "1 Day",
   category: "Apparel & Accessories",
-  description: "Test Description",
-  highPrice: "100",
-  lowPrice: "50",
+  description: "",
+  highPrice: "",
+  lowPrice: "",
   lowPriceFollowers: "100 Followers",
-  quantity: "10",
+  quantity: "",
   checkbox: true
 };
 

@@ -42,6 +42,24 @@ var api = {
     });
   },
 
+  followProduct: function(id, cb) {
+    var url = "/api/follow-product/"+id;
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      headers: {'Authorization': localStorage.token},
+      type: 'PUT',
+      success: function(res) {
+        if (cb)
+          cb(true, res);
+      },
+      error: function(xhr, status, err) {
+        if (cb)
+          cb(false, status);
+      }
+    });
+  },
+
   addProduct: function(data, cb) {
     var url = "/api/product";
     $.ajax({

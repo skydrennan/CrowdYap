@@ -14,6 +14,7 @@ var productSchema = new Schema({
   lowPrice: String,
   lowPriceFollowers: String,
   quantity: String,
+  followers: {type: {String : Boolean}, default: {}}
 });
 
 productSchema.set('toJSON', {

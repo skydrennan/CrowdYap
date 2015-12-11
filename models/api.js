@@ -36,6 +36,32 @@ app.post('/api/product', function (req,res) {
   });
 });
 
+
+app.put('/api/follow-product/:id', function (req,res) {
+  // validate the supplied token
+  user = User.verifyToken(req.headers.authorization, function(user) {
+    if (user) {
+      Product.findById(req.params.id, function(err, product) {
+        if (err) {
+          res.sendStatus(403);
+          return;
+        }
+        product.followers[user.id] = true;
+        product.save(function(err) {
+          if (err) {
+            res.sendStatus(403);
+            return;
+          }
+          // return value is the item as JSON
+          res.json(Object.keys(product.followers).length);
+        });
+      });
+    } else {
+      res.sendStatus(403);
+    }
+  });
+});
+
 app.get('/api/product/:id', function (req,res) {
   // validate the supplied token
   user = User.verifyToken(req.headers.authorization, function(user) {
@@ -46,8 +72,15 @@ app.get('/api/product/:id', function (req,res) {
           return;
         }
         productObj = product.toObject();
+        if (user.id in product.followers){
+          productObj.following = true;
+        }
+        else{
+          productObj.following = false;
+        }
+        delete productObj.followers;
         productObj.currentPrice = productObj.highPrice;
-        productObj.followerCount = "0";
+        productObj.followerCount = Object.keys(product.followers).length;
         productObj.seller = user.username;
         res.json({product:productObj});
       });

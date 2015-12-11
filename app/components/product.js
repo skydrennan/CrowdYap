@@ -80,9 +80,9 @@ var DescriptionPanel = React.createClass({
 
 var PricePanel = React.createClass({
   mixins: [ History ],
-  followClick: function(index) {
+  followClick: function(event) {
     event.preventDefault();
-    alert("You are now following this product!");
+    api.followProduct(this.props.product._id, this.props.onFollowSuccess);
   },
   buyNowClick: function(index) {
     event.preventDefault();
@@ -98,7 +98,9 @@ var PricePanel = React.createClass({
           <h2>${this.props.product.currentPrice}.00 <small>Current Price</small></h2>
           <button onClick={this.buyNowClick} type="button" className="btn btn-primary">Buy Now</button><h4> {this.props.product.quantity} <small>Remaining </small></h4>
           <h3>{this.props.product.followerCount} <small>People Following</small></h3>
-          <button onClick={this.followClick} type="button" className="btn btn-primary">Follow</button>
+          { !this.props.product.following ? <button onClick={this.followClick} type="button" className="btn btn-primary">Follow</button>: 
+            <button type="button" disabled="true" className="btn btn-default">Following</button>
+           }
         </div>
       </div>
       )
@@ -136,6 +138,14 @@ var Product = React.createClass({
     var id = this.props.params.id
     api.getProduct(id, this.loadProduct);
   },
+  handleFollowSuccess: function(status, followers){
+    var modifiedProduct = this.state.product;
+    modifiedProduct.followerCount = followers;
+    modifiedProduct.following = true;
+      this.setState({
+        product: modifiedProduct
+      });
+  },
   loadProduct: function(status, data){
     if (status) {
       this.setState({
@@ -149,7 +159,7 @@ var Product = React.createClass({
     return (
       <div>
         <ProductPanel product={this.state.product} />
-        <PricePanel product={this.state.product} />
+        <PricePanel product={this.state.product} onFollowSuccess={this.handleFollowSuccess}/>
         <BuyPanel product={this.state.product} />
         <DescriptionPanel product={this.state.product} />
       </div>

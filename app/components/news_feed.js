@@ -40,9 +40,6 @@ var news_feed = React.createClass({
       this.setState({
         products: data.products
       });
-    } else {
-      // if the API call fails, redirect to the login page
-      this.context.router.transitionTo('/');
     }
   },
 
