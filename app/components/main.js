@@ -24,9 +24,9 @@ var routes = (
   <Router>
     <Route name="app" path="/" component ={App}>
       <IndexRoute component = {Home} />
-      <Route name="product" path="/product" component={Product} />
-      <Route name="create_product" path="/create_product" component={CreateProduct} />
-      <Route name="checkout" path="/checkout" component={Checkout} />
+      <Route name="product" path="/product/:id" component={Product} />
+      <Route name="create_product" path="create_product" component={CreateProduct} />
+      <Route name="checkout" path="checkout" component={Checkout} />
       <Route className="right" name="login" path="/login" component={Login} />
       <Route className="right" name="register" path="/register" component={Register} />
     </Route>

@@ -2,9 +2,12 @@
 
 var React = require("react");
 var ReactRouter = require("react-router");
+var marked = require("react-marked");
 
 var Link = ReactRouter.Link;
 var History = ReactRouter.History;
+
+var api = require("./api.js");
 
 require('react-photoswipe/lib/photoswipe.css');
 
@@ -31,10 +34,6 @@ var items = [
   }
 ];
 
-var options = {
-  //http://photoswipe.com/documentation/options.html
-};
-
 getThumbnailContent = (item) => {
   return (
     <img src={item.thumbnail} width={120} height={90}/>
@@ -45,7 +44,7 @@ var ProductGallery = React.createClass({
   render: function() {
     return (
       //<p>Hello World</p>
-      <PhotoSwipeGallery items={items} options={options} thumbnailContent={getThumbnailContent}/>
+      <PhotoSwipeGallery items={items} thumbnailContent={getThumbnailContent}/>
       )
   }
 });
@@ -55,15 +54,19 @@ var ProductForm = React.createClass({
     for (var key in this.props.data){
       this.setState({[key]: this.props.data[key]});
     }
-    /*this.setState({
-      likesIncreasing: nextProps.likeCount > this.props.likeCount
-    });*/
   },
 
   getInitialState: function() {
     return {};
   },
   handleFormSubmit: function(form) {
+    // get data from form
+    var data = this.state;
+    if (!data) {
+      return;
+    }
+    // call API to add item, and reload once added
+    api.addProduct(data, this.props.success);
 
   }, 
   handleChildStateChange: function(change){
@@ -75,10 +78,10 @@ var ProductForm = React.createClass({
   render: function() {
     return (
       <div>
-          <ProductPanel onStateChange={this.handleChildStateChange} data={data} />
-          <ImagePanel data={data} />
-          <PricePanel data={data} />
-          <AnotherPanel data={data} />
+          <ProductPanel onStateChange={this.handleChildStateChange} data={this.props.data} />
+          <ImagePanel data={this.props.data} />
+          <PricePanel onStateChange={this.handleChildStateChange} data={this.props.data} />
+          <AnotherPanel onStateChange={this.handleChildStateChange} data={this.props.data} />
           <PostListingPanel onFormSubmit={this.handleFormSubmit} data={this.props.data} />
       </div>
       )
@@ -134,6 +137,11 @@ var ProductPanel = React.createClass({
 });
 
 var PostListingPanel = React.createClass({
+  rawMarkup: function(){
+    //var rawMarkup = marked("Agree to terms and conditions", {sanitize:true});
+    var rawMarkup = "Agree to terms and conditions";
+    return { __html: rawMarkup};
+  },
 
 
   getInitialState: function() {
@@ -155,7 +163,7 @@ var PostListingPanel = React.createClass({
         <form onSubmit={this.handleSubmit}>
           <div className="checkbox">
             <label>
-              <input checked={this.state.checkbox} value={this.state.valuecheckbox} type="checkbox" onChange={this.handleChange}> Agree to terms and conditions </input>
+              <input checked={this.state.checkbox} value={this.state.valuecheckbox} type="checkbox" onChange={this.handleChange} dangerouslySetInnerHTML={this.rawMarkup()} />
             </label>
           </div>
           <button type="submit" className="btn btn-primary">Post Product Yap</button>
@@ -187,6 +195,23 @@ var ImagePanel = React.createClass({
 });
 
 var PricePanel = React.createClass({
+  getInitialState: function() {
+    return {lowPriceFollowers: this.props.data.lowPriceFollowers,
+            highPrice: this.props.data.highPrice,
+            lowPrice: this.props.data.lowPrice};
+  },
+  handleFollowersChange: function(e) {
+    this.setState({lowPriceFollowers: e.target.value});
+    this.props.onStateChange({lowPriceFollowers: e.target.value})
+  },
+  handleHighPriceChange: function(e) {
+    this.setState({highPrice: e.target.value});
+    this.props.onStateChange({highPrice: e.target.value})
+  },
+  handleLowPriceChange: function(e) {
+    this.setState({lowPrice: e.target.value});
+    this.props.onStateChange({lowPrice: e.target.value})
+  },
   render: function() {
     return (
       <div className="col-sm-6 panel panel-default product-panel price-panel">
@@ -194,18 +219,18 @@ var PricePanel = React.createClass({
           <div className="form-group">
             <div className="input-group">
               <div className="input-group-addon">$</div>
-              <input type="text" className="form-control" id="highprice" placeholder="High Price" />
+              <input type="text" className="form-control" onChange={this.handleHighPriceChange} value={this.state.highPrice} id="highprice" placeholder="High Price" />
               <div className="input-group-addon">.00</div>
             </div>
             <br />
             <div className="input-group">
               <div className="input-group-addon">$</div>
-              <input type="text" className="form-control" id="lowprice" placeholder="Low Price" />
+              <input type="text" className="form-control" onChange={this.handleLowPriceChange} value={this.state.lowPrice} id="lowprice" placeholder="Low Price" />
               <div className="input-group-addon">.00</div>
             </div>
             <br />
-            <label htmlFor="duration">Followers for lowest price</label>
-            <select className="form-control" id="max-followers">
+            <label htmlFor="max-followers">Followers for lowest price</label>
+            <select className="form-control" onChange={this.handleFollowersChange} value={this.state.lowPriceFollowers} id="max-followers">
               <option>100 Followers</option>
               <option>1000 Followers</option>
               <option>10000 Followers</option>
@@ -222,13 +247,25 @@ var PricePanel = React.createClass({
 
 
 var AnotherPanel = React.createClass({
+  getInitialState: function() {
+    return {duration: this.props.data.duration,
+            quantity: this.props.data.quantity};
+  },
+  handleQuantityChange: function(e) {
+    this.setState({quantity: e.target.value});
+    this.props.onStateChange({quantity: e.target.value})
+  },
+  handleDurationChange: function(e) {
+    this.setState({duration: e.target.value});
+    this.props.onStateChange({duration: e.target.value})
+  },
   render: function() {
     return (
       <div className="col-sm-5 col-sm-offset-1 panel panel-default product-panel buy-panel">
         <div className="panel-body">
           <div className="form-group">
               <label htmlFor="duration">How long will the post last?</label>
-              <select className="form-control" id="category">
+              <select className="form-control" onChange={this.handleDurationChange} value={this.state.duration} >
                 <option>1 Day</option>
                 <option>1 Week</option>
                 <option>2 Weeks</option>
@@ -237,7 +274,7 @@ var AnotherPanel = React.createClass({
               </select>
               <br /> 
               <label htmlFor="duration">How many are for sale?</label>
-              <input type="text" className="form-control" id="quantity" placeholder="Quantity" />
+              <input type="text" className="form-control" onChange={this.handleQuantityChange} value={this.state.quantity} placeholder="Quantity" />
           </div>
         </div>
       </div>
@@ -246,14 +283,32 @@ var AnotherPanel = React.createClass({
 });
 
 var data =
-  {id: 1, title: "", description:"", 
-  category: "Apparel & Accessories", priceInfo: "Here is some price info.", checkbox: false};
+{
+  title: "Test Title",
+  duration: "1 Day",
+  category: "Apparel & Accessories",
+  description: "Test Description",
+  highPrice: "100",
+  lowPrice: "50",
+  lowPriceFollowers: "100 Followers",
+  quantity: "10",
+  checkbox: true
+};
 
 var CreateProduct = React.createClass({
+  mixins: [ History ],
+  success: function(success, id) {
+    var url = 'product/'+id;
+    //this.context.router.transitionTo('product/1', {id:1});
+
+    this.history.pushState(null, url);
+    //api.getItems(this.listSet);
+  },
+
   render: function() {
     return (
       <div>
-        <ProductForm data={data} />
+        <ProductForm data={data} success={this.success} />
       </div>
     );
   }

@@ -6,6 +6,9 @@ var ReactRouter = require("react-router");
 var Link = ReactRouter.Link;
 var History = ReactRouter.History;
 
+
+var api = require("./api.js");
+
 require("../css/product-page.css");
 
 require('react-photoswipe/lib/photoswipe.css');
@@ -31,10 +34,6 @@ var items = [
   }
 ];
 
-var options = {
-  //http://photoswipe.com/documentation/options.html
-};
-
 getThumbnailContent = (item) => {
   return (
     <img src={item.thumbnail} width={120} height={90}/>
@@ -47,7 +46,7 @@ var ProductGallery = React.createClass({
   render: function() {
     return (
       //<p>Hello World</p>
-      <PhotoSwipeGallery items={items} options={options} thumbnailContent={getThumbnailContent}/>
+      <PhotoSwipeGallery items={items} thumbnailContent={getThumbnailContent}/>
       )
   }
 });
@@ -57,13 +56,10 @@ var ProductPanel = React.createClass({
     return (
       <div className="panel panel-default product-panel">
         <div className="panel-heading">
-          <h3 className="panel-title">{this.props.data.title}</h3>
+          <h1 className="panel-title">{this.props.product.title}</h1>
         </div>
         <div className="panel-body">
           <ProductGallery />
-          Panel content
-          <br /><br /><br /><br /><br /><br />
-          <br /><br /><br /><br /><br /><br />
         </div>
       </div>
       )
@@ -75,7 +71,7 @@ var DescriptionPanel = React.createClass({
     return (
       <div className="col-sm-12 panel panel-default product-panel">
         <div className="panel-body">
-          {this.props.data.description}
+          {this.props.product.description}
         </div>
       </div>
       )
@@ -91,18 +87,18 @@ var PricePanel = React.createClass({
   buyNowClick: function(index) {
     event.preventDefault();
     //this.refs.userInput.getDOMNode().value = '';
-    this.history.pushState(null, 'checkout');
+    //this.context.router.transitionTo('product/1', {id:1});
+    this.history.pushState('checkout');
+    //this.history.pushState(null, 'product/1', {id:1});
   },
   render: function() {
     return (
       <div className="col-sm-6 panel panel-default product-panel price-panel">
-        <div className="panel-body">
-          {this.props.data.priceInfo}
-          <br />
-
-          
-          <button onClick={this.followClick} type="button" className="btn btn-primary">Follow</button>
+        <div className="panel-body center">
+          <h2>${this.props.product.currentPrice}.00 <small>Current Price</small></h2>
           <button onClick={this.buyNowClick} type="button" className="btn btn-primary">Buy Now</button>
+          <h3>{this.props.product.followerCount} <small>People Following</small></h3>
+          <button onClick={this.followClick} type="button" className="btn btn-primary">Follow</button>
         </div>
       </div>
       )
@@ -113,8 +109,11 @@ var BuyPanel = React.createClass({
   render: function() {
     return (
       <div className="col-sm-5 col-sm-offset-1 panel panel-default product-panel buy-panel">
-        <div className="panel-body">
-          {this.props.data.sellerInfo}
+        <div className="panel-body center">
+
+          <h3>Seller: <small>dummy_seller1</small></h3>
+          <h4>{this.props.product.lowPriceFollowers} <small>and the price will drop to</small> ${this.props.product.lowPrice}.00</h4>
+          {this.props.product.sellerInfo}
         </div>
       </div>
       )
@@ -125,14 +124,34 @@ var data =
   {id: 1, title: "This is a temp Item Title", description:"Here is the description.", 
   sellerInfo: "Here is some seller info.", priceInfo: "Here is some price info."};
 
-var Product = React.createClass({
+var Product = React.createClass({  
+  mixins: [ History ],
+  getInitialState: function() {
+    return {
+      product: {
+      }
+    };
+  },
+  componentDidMount: function(){
+    var id = this.props.params.id
+    api.getProduct(id, this.loadProduct);
+  }, 
+  loadProduct: function(status, data){
+    if (status) {
+      this.setState({
+        product: data.product
+      });
+    } else {
+      this.history.pushState(null, '/');
+    }
+  },
   render: function() {
     return (
       <div>
-        <ProductPanel data={data} />
-        <PricePanel data={data} />
-        <BuyPanel data={data} />
-        <DescriptionPanel data={data} />
+        <ProductPanel product={this.state.product} />
+        <PricePanel product={this.state.product} />
+        <BuyPanel product={this.state.product} />
+        <DescriptionPanel product={this.state.product} />
       </div>
     );
   }

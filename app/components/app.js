@@ -53,7 +53,7 @@ var App = React.createClass({
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav">
                   <li><Link to="create_product">Create Product</Link></li>
-                  <li><Link to="product">Example Listing</Link></li>
+                  <li><Link to="product/123">Example Listing</Link></li>
 		              <li><Link to="login">Login</Link></li>
                   <li><Link to="register">Register</Link></li>
                   <li><a href="#" onClick={this.logout}>Logout</a></li>
